@@ -1,0 +1,73 @@
+.grpdetco{
+   position: absolute;
+   width:100vw;
+   height: 100vh;
+   top: 50%;
+   left: 50%;
+   /* display: flex; */
+   transform: translate(-50%, -50%);
+   background-color: rgba(240, 248, 255, 0.39);
+   backdrop-filter: blur(10px);
+   justify-content: center;
+   padding: 2rem;
+
+}
+.grpdetco .grpdet{
+   width: 100%;
+   padding: 0.5rem;
+   background-color: white;
+   border-radius: 15px;
+   border: 1px solid;
+}
+
+.grpdet .adc_header {
+border-bottom: 3px solid goldenrod;
+display: flex !important;
+flex-direction: row;
+}
+
+.adc_header h1 {
+width: 30%;
+font-size: calc(100vw/35);
+}
+
+.adc_header .adc_btn {
+width: 70%;
+text-align: right;
+
+}
+
+.grplist{
+   display: flex;
+   flex-direction: column;
+   padding: 1rem;
+   width: 100%;
+}
+
+.grplist .grp{
+   border: 3px solid rgba(194, 194, 194, 0.39);
+   border-radius: 10px;
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   cursor: pointer;
+   margin-bottom: 20px;
+}
+
+.grplist .grp img.grplog {
+   width: 15%;
+}
+
+
+.grpline{
+   font-size: 3rem;
+   margin: 0.5rem;
+   width: 80%;
+   text-align:center;
+}
+
+@media (max-width: 450px){
+   .grpline{
+      font-size: calc(100vw/15);
+   }
+}

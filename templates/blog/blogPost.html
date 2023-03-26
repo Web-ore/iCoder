@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load hitcount_tags %}
+{% block title %} Blogpost{% endblock title %}
+
+{% block body %}
+<div class="container my-3">
+<div class="blog-post">
+        <h2 class="blog-post-title">{{post.title}} 
+          <span class="btn-primary"> {{ post.tags.all.first }}</span>
+        </h2>
+        <span id="views" style="color: black;">views: {% get_hit_count for post %}</span>
+        <p class="blog-post-meta">{{post.timeStamp}} by <a href="/about">{{post.author}}</a> (<span>{{post.views}} views</span>)</p>
+        <p>{{post.content | safe}}</p>
+        {% for c in content %}
+          {{c.another | safe}}
+        {% endfor %}
+        <hr>
+      </div>
+      </div>
+ {% endblock body%}

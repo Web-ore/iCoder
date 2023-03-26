@@ -1,0 +1,17 @@
+{% extends 'Ads/Ads_Dashboard.html' %}
+
+{% block ads_css %}
+<link rel="stylesheet" href="/static/css/ads_form.css">
+{% endblock ads_css %}
+
+{% block Ads_body %}
+<div class="TipAdmin">
+   <form method="post" id="createform">
+      {% csrf_token %}
+      {{ form.as_p }}
+   
+      <button type="submit" class="btn btn-primary">Save</button>
+      <a href="{% url 'AdsList' %}" class="btn btn-primary">Cancel</a>
+   </form>
+</div>
+{% endblock Ads_body %}

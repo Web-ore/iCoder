@@ -1,0 +1,114 @@
+{% extends 'Ads/Ads_dashboard.html' %}
+
+
+{% block Ads_body %}  
+{% for ad in Ads %}
+<div class="adsCards" id="ad{{ad.pk}}">
+   <div class="row border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 my-4 position-relative adscard_card">
+     <div class="boimg" style="width: auto;">
+         <div class="number">🃏{{ad.Position_Number}}</div>
+     </div>
+     <div class="col p-4 d-flex flex-column position-static">
+         <h3 class="mb-0">{{ad.Ads_Name}}</h3>
+         <div class="mb-1 text-muted adscardext">
+             <span class="m-1">Date: {{ad.Created.date}}</span> | 
+            <span class="m-1">Type: {{ad.Type}}</span> | 
+            <span class="m-1">{% if ad.Visibility == True %}
+                Visible
+                {% else %}
+                Hidden
+            {% endif %}</span> | 
+                <span class="m-1">
+                    Status: {{ad.Status}}ed</span>
+         </div>
+
+
+         <div class="my-2 adscards_btn">
+             <a href="{% url 'AdsEdit' ad.pk %}" role="button" class="btn btn-outline-dark">Edit</a>
+             <a href="#Delete" role="button" class="btn btn-outline-dark" onclick="Delete(); document.getElementById('adcosub').value = '{{ad.pk}}'; document.getElementById('ad_name').innerHTML = '{{ad.Ads_Name}}';document.getElementById('gn').value='{{ad.Shifted}}';" >Delete</a>
+
+             <a href="#shift" role="button" class="btn btn-outline-dark {% if mirror < 2 %} disabled{% endif %}" onclick="shiftPos(); document.getElementById('mad').value='{{ad.Position_Number}}';  document.getElementById('ad_name').innerHTML = '{{ad.Ads_Name}}'; document.getElementById('pn{{ad.Position_Number}}').remove();">ShiftPos</a>
+            
+
+
+         </div>
+
+     </div>
+
+
+
+
+ </div>
+
+ </div>
+  
+ {% endfor %}
+
+
+ 
+ <script>
+    // Get the container element
+ 
+  function Delete() {
+      var adcc = document.getElementById("adpcoont");
+      adcc.style.display = "flex"
+
+  
+      var adinput = document.getElementById("adsinput");
+    
+      // Create a new element
+      adinput.innerHTML = `
+      <label for="visi" class="form-check-label">Delete: </label>
+           <input type="checkbox" id="delete" class="form-check-input" required><br>
+           <input type=hidden name="adcosub" id="adcosub">
+           <input type=hidden name="gn" value="Home" id="gn">
+           `;
+
+  }
+
+  function shuffle() {
+    var adcc = document.getElementById("adpcoont");
+    adcc.style.display = "flex"
+
+
+    var adinput = document.getElementById("adsinput");
+  
+    // Create a new element
+    adinput.innerHTML = `
+    <label for="shuffle" class="form-check-label">Shuffle: </label>
+         <input type="checkbox" id="shuffle" value="shuffle" name="shuffle" class="form-check-input" required><br>
+         <input type=hidden name="gn" value="" id="gn">
+         `;
+
+}
+
+function shiftPos() {
+    var adcc = document.getElementById("adpcoont");
+    adcc.style.display = "flex"
+
+
+    var adinput = document.getElementById("adsinput");
+
+    adinput.innerHTML = `
+         <label for="type" class="form-check-label">Where To Shift: </label>
+         <select name="spv" class="form-select" style="width: 50%; display: inline;" id="spv">
+          {% for ad in tat %}
+            <option id="pn{{ad.Position_Number}}" value="{{ad.Position_Number}}">{{ad.Position_Number}}
+            </option>
+          {% endfor %}
+         </select>
+         <input type=hidden name="mad" value="" id="mad">
+         <input type=hidden name="gn" value="{{grp}}" id="gn">
+
+         `;
+         
+         
+        }
+
+
+</script>
+
+
+
+
+  {% endblock Ads_body %} 

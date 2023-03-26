@@ -1,0 +1,11 @@
+# Exclude virtual environment
+venv/
+env/
+
+# Exclude Python compiled files
+__pycache__/
+*.pyc
+
+# Exclude other sensitive files
+*.env
+*.key

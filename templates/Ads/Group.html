@@ -1,0 +1,278 @@
+{% extends 'base.html' %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/Ads_Dashboard.css">
+<script src="/static/js/pop-up.js"></script>
+{% endblock css %}
+
+{% block body %}
+
+<div class="adpcoont" id="adpcoont">
+   <div class="updatebox">
+      <h2>"<span id="ad_name"></span>"</h2>
+      <form method="post">
+        {% csrf_token %}
+      <div class="adsinput" id="adsinput">
+
+       </div>
+      <div class="subbtn text-center">
+         <button class="btn btn-outline-danger mx-auto" onclick="document.getElementById('adpcoont').style.display = 'none';" type="button">Cancel</button>
+         <button class="btn btn-outline-danger mx-auto" type="submit">Submit</button>
+      </div>
+     </form>
+   </div>
+</div>
+
+<div class="grpdetco" id="gdc" style="display: {{active}};">
+   <div class="grpdet">
+      <div class="adc_header">
+         <h1>{{gn}} Ads</h1>
+  
+  
+         <div class="adc_btn">
+  
+           <a href="{% url 'AdsCreate' gn %}" class="btn btn-primary" style="font-size: calc(100vw/70);">Create +</a>
+  
+  
+            <button type="submit" class="btn btn-primary" style="font-size: calc(100vw/70);" value="shuffle"
+            onclick="shuffle()">Shuffle</button>
+
+            <button class="btn btn-outline-secondary" onclick="" style="font-size: calc(100vw/70);">Select</button>
+
+            <a class="btn btn-outline-secondary" href="{% url 'Group' %}" style="font-size: calc(100vw/70);">Close</a>
+  
+         </div>
+       </div>
+
+       <div class="tgc" id="tgc" style="padding: 0.5rem;">
+         {% for ad in lg %}
+         <div class="adsCards" id="ad{{ad.pk}}">
+            <div class="row border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 my-4 position-relative adscard_card">
+              <div class="boimg" style="width: auto;">
+                  <div class="number">🃏{{ad.Position_Number}}</div>
+              </div>
+              <div class="col p-4 d-flex flex-column position-static">
+                  <h3 class="mb-0">{{ad.Ads_Name}}</h3>
+                  <div class="mb-1 text-muted adscardext">
+                      <span class="m-1">Date: {{ad.Created.date}}</span> | 
+                     <span class="m-1">Type: {{ad.Type}}</span> | 
+                     <span class="m-1">{% if ad.Visibility == True %}
+                         Visible
+                         {% else %}
+                         Hidden
+                     {% endif %}</span> | 
+                         <span class="m-1">
+                             Status: {{ad.Status}}d</span>
+                  </div>
+         
+         
+                  <div class="my-2 adscards_btn">
+                      <a href="{% url 'AdsEdit' ad.pk %}" role="button" class="btn btn-outline-dark">Edit</a>
+                      <a href="#Delete" role="button" class="btn btn-outline-dark" onclick="Delete(); document.getElementById('adcosub').value = '{{ad.pk}}'; document.getElementById('ad_name').innerHTML = '{{ad.Ads_Name}}';document.getElementById('gn').value='{{ad.Shifted}}';">Delete</a>
+         
+                      <a href="#shift" role="button" class="btn btn-outline-dark {% if mirror < 2 %} disabled{% endif %}" onclick="shiftPos(); document.getElementById('adcosub').value='{{ad.Position_Number}}';  document.getElementById('ad_name').innerHTML = '{{ad.Ads_Name}}'; document.getElementById('pn{{ad.Position_Number}}').remove();">ShiftPos</a>
+                     
+         
+         
+                  </div>
+         
+              </div>
+         
+         
+         
+         
+          </div>
+         
+          </div>
+           
+         {% endfor %}
+       </div>
+
+   </div>
+</div>
+
+<style>
+   .number {
+      display: inline-block;
+      font-size: calc(100vw/15);
+      font-weight: 500;
+    }
+
+    @media (max-width: 550px){
+      .adscard_card .adscards_btn a {
+         font-size: calc(100vw/30)
+       }
+    }
+   </style>
+
+<style>
+   .grpdetco{
+      position: absolute;
+      width:100vw;
+      height: 100vh;
+      top: 50%;
+      left: 50%;
+      /* display: flex; */
+      transform: translate(-50%, -50%);
+      background-color: rgba(240, 248, 255, 0.39);
+      backdrop-filter: blur(10px);
+      justify-content: center;
+      padding: 2rem;
+
+   }
+   .grpdetco .grpdet{
+      width: 100%;
+      padding: 0.5rem;
+      background-color: white;
+      border-radius: 15px;
+      border: 1px solid;
+   }
+
+   .grpdet .adc_header {
+   border-bottom: 3px solid goldenrod;
+   display: flex !important;
+   flex-direction: row;
+ }
+
+ .adc_header h1 {
+   width: 30%;
+   font-size: calc(100vw/35);
+ }
+
+ .adc_header .adc_btn {
+   width: 70%;
+   text-align: right;
+
+ }
+
+
+
+</style>
+
+   <div class="grpc">
+      <div class="grplist">
+         {% for g in grp %}
+         <a href="?grp={{g}}">
+         <div class="grp">
+               <img src="/static/wow!.webp" alt="" srcset="" class="grplog">
+
+            <div class="grpline">
+               {{g}}
+            </div>
+         </div>
+      </a>
+         {% endfor %}
+      </div>
+   </div>
+
+   <style>
+      *{
+         margin: 0;
+         padding: 0;
+      }
+
+      .grplist{
+         display: flex;
+         flex-direction: column;
+         padding: 1rem;
+         width: 100%;
+      }
+
+      .grplist a{
+         text-decoration: none;
+         color: black;
+      }
+
+      .grplist .grp{
+         border: 3px solid rgba(194, 194, 194, 0.39);
+         border-radius: 10px;
+         display: flex;
+         flex-direction: row;
+         align-items: center;
+         cursor: pointer;
+         margin-bottom: 20px;
+         text-decoration: none;
+      }
+
+      .grplist .grp img.grplog {
+         width: 15%;
+      }
+
+
+      .grpline{
+         font-size: 3rem;
+         margin: 0.5rem;
+         width: 80%;
+         text-align:center;
+
+      }
+
+      @media (max-width: 450px){
+         .grpline{
+            font-size: calc(100vw/15);
+         }
+      }
+
+
+   </style>
+
+   <script>
+// Get the container element
+
+function Delete() {
+  var adcc = document.getElementById("adpcoont");
+  adcc.style.display = "flex"
+
+
+  var adinput = document.getElementById("adsinput");
+
+  // Create a new element
+  adinput.innerHTML = `
+  <label for="visi" class="form-check-label">Delete: </label>
+       <input type="checkbox" id="delete" class="form-check-input" required><br>
+       <input type=hidden name="adcosub" id="adcosub">
+       <input type=hidden name="gn" value="Home" id="gn">
+       `;
+
+}
+
+function shuffle() {
+var adcc = document.getElementById("adpcoont");
+adcc.style.display = "flex"
+
+
+var adinput = document.getElementById("adsinput");
+
+// Create a new element
+adinput.innerHTML = `
+<label for="shuffle" class="form-check-label">Shuffle: </label>
+     <input type="checkbox" id="adcosub" value="shuffle" name="adcosub" class="form-check-input" required><br>
+     <input type=hidden name="gn" value="" id="gn">
+     `;
+
+}
+
+function shiftPos() {
+var adcc = document.getElementById("adpcoont");
+adcc.style.display = "flex"
+
+
+var adinput = document.getElementById("adsinput");
+
+adinput.innerHTML = `
+     <label for="type" class="form-check-label">Where To Shift: </label>
+     <select name="spv" class="form-select" style="width: 50%; display: inline;" id="spv">
+      {% for ad in tat %}
+        <option id="pn{{ad.Position_Number}}" value="{{ad.Position_Number}}">{{ad.Position_Number}}
+        </option>
+      {% endfor %}
+     </select>
+     <input type=hidden name="adcosub" value="" id="adcosub">
+     <input type=hidden name="gn" value="{{gn}}" id="gn">
+
+     `;
+    }
+
+
+   </script>
+{% endblock body %}

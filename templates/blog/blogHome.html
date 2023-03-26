@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load hitcount_tags %}
+{% block title %} BlogHome {% endblock title %}
+{% load static %}
+{% block js %}
+<script>
+    let previews = document.getElementsByClassName('preview');
+    Array.from(previews).forEach((element)=> {
+        element.innerHTML = element.innerText;
+    })
+</script>
+{% endblock js %}
+
+{% block blogactive %} active {% endblock blogactive %}
+
+
+{% block body %}
+<div class="container my-3">
+    <h2>Coding Articles by iCoder</h2>
+    <div class="infinite-container">
+    {% for post in posted %}
+    <div
+        class="infinite-item row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 my-4 position-relative">
+        <div class="col p-4 d-flex flex-column position-static">
+            <strong class="d-inline-block mb-2 text-primary">Article by {{post.author}}</strong>({% get_hit_count for post %})
+            <h3 class="mb-0"><a class="text-dark" href="/blog/{{post.slug}}"> {{post.title}} </a> </h3>
+            <div class="mb-1 text-muted">{{post.datetime}}</div>
+            <p id="card-text mb-auto">
+            <div class="preview">
+                {{post.content| safe| truncatechars:500}}
+            </div>
+            </p>
+            <div class="my-2">
+                <a href="/blog/{{post.slug}}" role="button" class="btn btn-primary">Continue reading</a>
+            </div>
+
+        </div>
+    </div>
+    {% endfor %}
+    <div class="d-flex d-none position-fixed" style="top:35vh;left:46vw">
+        <button class="btn btn-primary loading">
+            <span class="spinner-border spinner-border-sm"></span>
+            Please wait...
+        </button>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            {% if page_obj.has_next  %}
+            <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}">next</a>
+            {% endif %}
+            </span>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<script src="{% static "js/jquery.waypoints.min.js" %}"></script>
+<script src="/static/js/infinite.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+var infinite = new Waypoint.Infinite({
+    element: $('.infinite-container')[0],
+
+    offset: 'bottom-in-view',
+
+    onBeforePageLoad: function () {
+        $('.loading').show();
+    },
+    onAfterPageLoad: function () {
+        $('.loading').hide();
+    }
+
+});
+</script>
+</div>
+
+</div>
+{% endblock %}
